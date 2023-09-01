@@ -2,31 +2,14 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-
-const SimpleComp = (params) => {
-  const onDollar = () => alert('Dollar ' + params.value);
-  const onAt = () => alert('At ' + params.value);
-
-  return (
-    <div>
-      <button onClick={() => onDollar()}>$</button>
-      <button onClick={onAt}>@</button>
-      {params.value}
-    </div>
-  );
-};
+import SimpleComp from './components/SimpleComp';
 
 function App() {
   const gridRef = useRef();
 
-  const [rowData, setRowData] = useState([
-    { make: 'Toyota', model: 'Celica', price: 35000 },
-    { make: 'Ford', model: 'Mondeo', price: 32000 },
-    { make: 'Porsche', model: 'Boxster', price: 72000 },
-  ]);
-
-  const [columnDefs, setColumnDefs] = useState([
-    { field: 'make', cellRenderer: SimpleComp },
+  const [rowData, setRowData] = useState([]);
+  const [columnDefs] = useState([
+    { field: 'make', cellRendererFramework: SimpleComp },
     { field: 'model' },
     { field: 'price' },
   ]);
@@ -49,12 +32,12 @@ function App() {
       .then((rowData) => setRowData(rowData));
   }, []);
 
-  const buttonListener = useCallback((e) => {
+  const buttonListener = useCallback(() => {
     gridRef.current.api.deselectAll();
-  });
+  }, []);
 
   return (
-    <>
+    <div className="app-container">
       <button onClick={buttonListener}>Push Me</button>
       <div className="ag-theme-alpine" style={{ height: 500 }}>
         <AgGridReact
@@ -67,7 +50,7 @@ function App() {
           onCellClicked={cellClickedListener}
         />
       </div>
-    </>
+    </div>
   );
 }
 
