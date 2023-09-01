@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -11,10 +11,18 @@ function App() {
   ]);
 
   const [columnDefs, setColumnDefs] = useState([
-    { field: 'make', sortable: true, filter: true },
-    { field: 'model', sortable: true, filter: true },
-    { field: 'price', sortable: true, filter: true },
+    { field: 'make' },
+    { field: 'model' },
+    { field: 'price' },
   ]);
+
+  const defaultColDef = useMemo(
+    () => ({
+      sortable: true,
+      filter: true,
+    }),
+    []
+  );
 
   useEffect(() => {
     fetch('https://www.ag-grid.com/example-assets/row-data.json')
@@ -25,7 +33,11 @@ function App() {
   return (
     <>
       <div className="ag-theme-alpine" style={{ height: 500 }}>
-        <AgGridReact rowData={rowData} columnDefs={columnDefs} />
+        <AgGridReact
+          rowData={rowData}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+        />
       </div>
     </>
   );
