@@ -4,7 +4,7 @@ const SimpleComp = (params) => {
 
   return (
     <div>
-      <button onClick={() => onAt()}>{params.buttonText}</button>
+      <button onClick={() => onAt()}>@</button>
       {params.value}
     </div>
   );

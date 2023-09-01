@@ -12,14 +12,16 @@ function App() {
     {
       field: 'make',
       cellRenderer: SimpleComp,
-      cellRendererParams: { buttonText: '@' },
     },
+    { field: 'model' },
     {
-      field: 'model',
-      cellRenderer: SimpleComp,
-      cellRendererParams: { buttonText: '#' },
+      field: 'price',
+      cellRenderer: (p) => (
+        <>
+          <b>Price is: {p.value}</b>
+        </>
+      ),
     },
-    { field: 'price' },
   ]);
 
   const defaultColDef = useMemo(
