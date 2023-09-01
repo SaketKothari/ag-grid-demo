@@ -4,8 +4,7 @@ const SimpleComp = (params) => {
 
   return (
     <div>
-      <button onClick={() => onDollar()}>$</button>
-      <button onClick={() => onAt()}>@</button>
+      <button onClick={() => onAt()}>{params.buttonText}</button>
       {params.value}
     </div>
   );

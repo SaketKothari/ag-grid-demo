@@ -9,8 +9,16 @@ function App() {
 
   const [rowData, setRowData] = useState([]);
   const [columnDefs] = useState([
-    { field: 'make', cellRendererFramework: SimpleComp },
-    { field: 'model' },
+    {
+      field: 'make',
+      cellRenderer: SimpleComp,
+      cellRendererParams: { buttonText: '@' },
+    },
+    {
+      field: 'model',
+      cellRenderer: SimpleComp,
+      cellRendererParams: { buttonText: '#' },
+    },
     { field: 'price' },
   ]);
 
