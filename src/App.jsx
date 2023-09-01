@@ -1,9 +1,11 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 function App() {
+  const gridRef = useRef();
+
   const [rowData, setRowData] = useState([
     { make: 'Toyota', model: 'Celica', price: 35000 },
     { make: 'Ford', model: 'Mondeo', price: 32000 },
@@ -34,8 +36,13 @@ function App() {
       .then((rowData) => setRowData(rowData));
   });
 
+  const buttonListener = useCallback((e) => {
+    gridRef.current.api.deselectAll();
+  });
+
   return (
     <>
+      <button onClick={buttonListener}>Push Me</button>
       <div className="ag-theme-alpine" style={{ height: 500 }}>
         <AgGridReact
           rowData={rowData}
