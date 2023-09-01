@@ -3,6 +3,11 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
+const SimpleComp = (params) => {
+  console.log(params);
+  return <>{params.value}</>;
+};
+
 function App() {
   const gridRef = useRef();
 
@@ -13,7 +18,7 @@ function App() {
   ]);
 
   const [columnDefs, setColumnDefs] = useState([
-    { field: 'make' },
+    { field: 'make', cellRenderer: SimpleComp },
     { field: 'model' },
     { field: 'price' },
   ]);
