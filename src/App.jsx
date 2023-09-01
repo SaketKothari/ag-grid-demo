@@ -37,6 +37,8 @@ function App() {
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
+          rowSelection="multiple"
+          animateRows={true}
         />
       </div>
     </>
