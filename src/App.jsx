@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -24,6 +24,10 @@ function App() {
     []
   );
 
+  const cellClickedListener = useCallback((event) => {
+    console.log('cellClicked', event);
+  }, []);
+
   useEffect(() => {
     fetch('https://www.ag-grid.com/example-assets/row-data.json')
       .then((res) => res.json())
@@ -39,6 +43,7 @@ function App() {
           defaultColDef={defaultColDef}
           rowSelection="multiple"
           animateRows={true}
+          onCellClicked={cellClickedListener}
         />
       </div>
     </>
