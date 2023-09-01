@@ -2,7 +2,9 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+
 import SimpleComp from './components/SimpleComp';
+import Rendering from './components/Rendering';
 
 function App() {
   const gridRef = useRef();
@@ -16,11 +18,7 @@ function App() {
     { field: 'model' },
     {
       field: 'price',
-      cellRenderer: (p) => (
-        <>
-          <b>Price is: {p.value}</b>
-        </>
-      ),
+      cellRenderer: Rendering
     },
   ]);
 
