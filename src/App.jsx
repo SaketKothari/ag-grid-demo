@@ -18,14 +18,20 @@ function App() {
     { field: 'model' },
     {
       field: 'price',
-      cellRenderer: Rendering
+      cellRenderer: Rendering,
     },
   ]);
 
   const defaultColDef = useMemo(
     () => ({
+      flex: 1,
       sortable: true,
       filter: true,
+      filterParams: {
+        debounceMs: 0,
+        buttons: ['apply', 'clear'],
+      },
+      floatingFilter: true,
     }),
     []
   );
@@ -47,7 +53,10 @@ function App() {
   return (
     <div className="app-container">
       <button onClick={buttonListener}>Push Me</button>
-      <div className="ag-theme-alpine" style={{ height: 500 }}>
+      <div
+        className="ag-theme-alpine"
+        style={{ width: '100%', height: '100vh' }}
+      >
         <AgGridReact
           ref={gridRef}
           rowData={rowData}
