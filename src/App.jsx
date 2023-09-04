@@ -21,6 +21,9 @@ function App() {
       field: 'price',
       cellRenderer: Rendering,
       filter: PriceFilter,
+      filterParams: {
+        title: 'My Custom Filter',
+      },
     },
   ]);
 

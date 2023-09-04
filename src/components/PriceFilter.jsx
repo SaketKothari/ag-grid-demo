@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 export default forwardRef((props, ref) => {
-  console.log(props);
+  //   console.log(props);
   const [filterState, setFilterState] = useState('off');
 
   useImperativeHandle(ref, () => {
@@ -10,7 +10,9 @@ export default forwardRef((props, ref) => {
         return filterState != 'off';
       },
       doesFilterPass(params) {
-        return params.data.price == filterState;
+        // console.log(params);
+        const field = props.colDef.field;
+        return params.data[field] == filterState;
       },
       getModel() {
         return undefined;
@@ -25,7 +27,7 @@ export default forwardRef((props, ref) => {
 
   return (
     <>
-      <div>Price filter</div>
+      <div>{props.title}</div>
       <label>
         Filter Off
         <input
