@@ -1,4 +1,10 @@
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 
 export default forwardRef((props, ref) => {
   const [filterState, setFilterState] = useState('off');
@@ -6,7 +12,7 @@ export default forwardRef((props, ref) => {
   useImperativeHandle(ref, () => {
     return {
       isFilterActive() {
-        return false;
+        return filterState == 'on';
       },
       doesFilterPass(params) {
         return false;
@@ -17,6 +23,10 @@ export default forwardRef((props, ref) => {
       setModal() {},
     };
   });
+
+  useEffect(() => {
+    props.filterChangedCallback();
+  }, [filterState]);
 
   const onListener = useCallback(() => setFilterState('on'));
   const offListener = useCallback(() => setFilterState('off'));
