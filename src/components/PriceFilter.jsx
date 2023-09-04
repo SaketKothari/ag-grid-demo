@@ -1,21 +1,16 @@
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 export default forwardRef((props, ref) => {
+  console.log(props);
   const [filterState, setFilterState] = useState('off');
 
   useImperativeHandle(ref, () => {
     return {
       isFilterActive() {
-        return filterState == 'on';
+        return filterState != 'off';
       },
       doesFilterPass(params) {
-        return false;
+        return params.data.price == filterState;
       },
       getModel() {
         return undefined;
@@ -28,9 +23,6 @@ export default forwardRef((props, ref) => {
     props.filterChangedCallback();
   }, [filterState]);
 
-  const onListener = useCallback(() => setFilterState('on'));
-  const offListener = useCallback(() => setFilterState('off'));
-
   return (
     <>
       <div>Price filter</div>
@@ -39,17 +31,17 @@ export default forwardRef((props, ref) => {
         <input
           type="radio"
           name="rbPriceFilter"
-          onChange={offListener}
+          onChange={() => setFilterState('off')}
           checked={filterState == 'off'}
         />
       </label>
       <label>
-        Filter On
+        32000
         <input
           type="radio"
           name="rbPriceFilter"
-          onChange={onListener}
-          checked={filterState == 'on'}
+          onChange={() => setFilterState(32000)}
+          checked={filterState == '32000'}
         />
       </label>
     </>
