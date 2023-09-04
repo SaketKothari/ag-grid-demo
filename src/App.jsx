@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
+import PriceFilter from './components/PriceFilter';
 import SimpleComp from './components/SimpleComp';
 import Rendering from './components/Rendering';
 
@@ -19,6 +20,7 @@ function App() {
     {
       field: 'price',
       cellRenderer: Rendering,
+      filter: PriceFilter,
     },
   ]);
 
@@ -26,12 +28,6 @@ function App() {
     () => ({
       flex: 1,
       sortable: true,
-      filter: true,
-      filterParams: {
-        debounceMs: 0,
-        buttons: ['apply', 'clear'],
-      },
-      floatingFilter: true,
     }),
     []
   );
