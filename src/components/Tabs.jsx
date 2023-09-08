@@ -36,13 +36,13 @@ function Tabs() {
             className={activeTab === index ? 'active' : ''}
             onClick={() => handleTabClick(index)}
           >
-            <i className={header.icon}></i> {header.text}
+            {header.text}
           </div>
         ))}
       </div>
       <div
         className="tab-indicator"
-        style={{ top: `calc(80px + ${activeTab * 50}px)` }}
+        style={{ left: `calc(180px * ${activeTab})` }}
       ></div>
       <div className="tab-content">
         {tabContentData.map((tab, index) => (
