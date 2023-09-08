@@ -1,3 +1,4 @@
+/* Tab Styles */
 .tabs {
   position: absolute;
   top: 50%;
@@ -17,6 +18,7 @@
 }
 
 .tabs .tab-header > div {
+  position: relative;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -31,6 +33,28 @@
 .tabs .tab-header > div:hover,
 .tabs .tab-header > div.active {
   color: #00acee;
+}
+
+/* Close button styles */
+.tabs .tab-header .close-button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background-color: #fff; /* Background color for the button */
+  border: 1px solid #ccc; /* Add a border to the button */
+  border-radius: 50%; /* Make it a circle */
+  width: 20px; /* Set the width and height */
+  height: 20px;
+  color: #888;
+  font-size: 14px; /* Adjust font size */
+  cursor: pointer;
+  outline: none;
+  transition: color 0.3s, background-color 0.3s; /* Add transitions for smoother hover effect */
+}
+
+.tabs .tab-header .close-button:hover {
+  color: #ff0000;
+  background-color: #eee; /* Change background color on hover */
 }
 
 .tabs .tab-content {
