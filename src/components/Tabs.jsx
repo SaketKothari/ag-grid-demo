@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Tab from './Tab';
 import Grid from './Grid';
 
 function Tabs() {
@@ -34,30 +35,13 @@ function Tabs() {
       <div className="w-11/12 md:w-2/3 lg:w-1/2">
         <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
           {tabData.map((tab, index) => (
-            <li className="mr-2" key={index}>
-              <a
-                href="#"
-                className={`inline-block p-4 ${
-                  activeTab === index
-                    ? 'text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500'
-                    : 'rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
-                }`}
-                onClick={() => handleTabClick(index)}
-              >
-                {tab.text}
-                {activeTab === index && (
-                  <button
-                    className="close-button ml-2 text-gray-500 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-500"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCloseTab(index);
-                    }}
-                  >
-                    X
-                  </button>
-                )}
-              </a>
-            </li>
+            <Tab
+              key={index}
+              tab={tab}
+              isActive={activeTab === index}
+              onClick={() => handleTabClick(index)}
+              onClose={() => handleCloseTab(index)}
+            />
           ))}
         </ul>
         <div className="tabs w-full h-96 bg-gray-100 shadow-md">
