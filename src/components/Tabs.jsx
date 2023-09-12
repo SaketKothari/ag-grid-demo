@@ -3,38 +3,53 @@ import Tab from './Tab';
 import Grid from './Grid';
 
 function Tabs() {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const tabData = [
+  const [tabs, setTabs] = useState([
     {
       text: 'Code',
       content:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...',
+      isVisible: true,
     },
     {
       text: 'About',
       content:
         'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...',
+      isVisible: true,
     },
     {
       text: 'Contact',
       content: <Grid />,
+      isVisible: true,
     },
-  ];
+  ]);
 
   const handleTabClick = (index) => {
-    setActiveTab(index);
+    // Toggle visibility of the clicked tab
+    const updatedTabs = tabs.map((tab, i) => {
+      return { ...tab, isVisible: i === index };
+    });
+    setTabs(updatedTabs);
   };
 
   const handleCloseTab = (index) => {
-    setActiveTab(-1);
+    // Remove the tab from the array
+    const updatedTabs = tabs.filter((tab, i) => i !== index);
+    setTabs(updatedTabs);
+
+    // Select the first tab if it's not visible
+    if (index === activeTab) {
+      const firstVisibleTab = updatedTabs.findIndex((tab) => tab.isVisible);
+      setActiveTab(firstVisibleTab !== -1 ? firstVisibleTab : -1);
+    }
   };
+
+  const activeTab = tabs.findIndex((tab) => tab.isVisible);
 
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="w-11/12 md:w-2/3 lg:w-1/2">
         <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
-          {tabData.map((tab, index) => (
+          {tabs.map((tab, index) => (
             <Tab
               key={index}
               tab={tab}
@@ -49,9 +64,9 @@ function Tabs() {
             {activeTab !== -1 && (
               <div className="tab-content-item absolute w-full text-center transform transition-transform duration-500 ease-in-out">
                 <h2 className="font-semibold text-xl">
-                  {tabData[activeTab].text}
+                  {tabs[activeTab].text}
                 </h2>
-                <p className="p-4">{tabData[activeTab].content}</p>
+                <p className="p-4">{tabs[activeTab].content}</p>
               </div>
             )}
           </div>
