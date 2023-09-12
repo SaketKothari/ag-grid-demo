@@ -26,40 +26,52 @@ function Tabs() {
   };
 
   const handleCloseTab = (index) => {
-    setActiveTab(-1); // Reset activeTab to -1 to close the tab
+    setActiveTab(-1);
   };
 
   return (
-    <div className="tabs">
-      <div className="tab-header">
-        {tabData.map((tab, index) => (
-          <div
-            key={index}
-            className={`tab-header-item ${activeTab === index ? 'active' : ''}`}
-            onClick={() => handleTabClick(index)}
-          >
-            {tab.text}
-            {activeTab === index && (
-              <button
-                className="close-button"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent the tab from closing when clicking the X button
-                  handleCloseTab(index);
-                }}
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-11/12 md:w-2/3 lg:w-1/2">
+        <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+          {tabData.map((tab, index) => (
+            <li className="mr-2" key={index}>
+              <a
+                href="#"
+                className={`inline-block p-4 ${
+                  activeTab === index
+                    ? 'text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500'
+                    : 'rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300'
+                }`}
+                onClick={() => handleTabClick(index)}
               >
-                X
-              </button>
+                {tab.text}
+                {activeTab === index && (
+                  <button
+                    className="close-button ml-2 text-gray-500 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-500"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCloseTab(index);
+                    }}
+                  >
+                    X
+                  </button>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="tabs w-full h-96 bg-gray-100 shadow-md">
+          <div className="tab-content relative h-full overflow-hidden">
+            {activeTab !== -1 && (
+              <div className="tab-content-item absolute w-full text-center transform transition-transform duration-500 ease-in-out">
+                <h2 className="font-semibold text-xl">
+                  {tabData[activeTab].text}
+                </h2>
+                <p className="p-4">{tabData[activeTab].content}</p>
+              </div>
             )}
           </div>
-        ))}
-      </div>
-      <div className="tab-content">
-        {activeTab !== -1 && (
-          <div className="tab-content-item active">
-            <h2>{tabData[activeTab].text}</h2>
-            <p>{tabData[activeTab].content}</p>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
