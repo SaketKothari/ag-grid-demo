@@ -1,13 +1,44 @@
 // Tabs.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTab, removeTab, toggleTab } from '../slices/tabsSlice';
+import {
+  addTab,
+  removeTab,
+  toggleTab,
+  updateTabContent,
+} from '../slices/tabsSlice';
 import Tab from './Tab';
+import { fetchTabContent } from '../utils/api';
 
 function Tabs() {
   const tabs = useSelector((state) => state.tabs.tabs);
   const activeTab = useSelector((state) => state.tabs.activeTab);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Fetch tab content from JSONPlaceholder
+    tabs.forEach((tab, index) => {
+      if (tab.contentFromAPI) {
+        // Skip if content is already fetched
+        return;
+      }
+
+      // Use the API function to fetch content
+      fetchTabContent(index)
+        .then((data) => {
+          // Ensure the data contains 'userId' and 'body'
+          if (data && data.userId && data.body) {
+            // Update tab content in the Redux store
+            dispatch(updateTabContent({ index, data }));
+          } else {
+            console.error(`Invalid data received for tab ${index}:`, data);
+          }
+        })
+        .catch((error) => {
+          console.error(`Error fetching tab content: ${error}`);
+        });
+    });
+  }, [tabs, dispatch]);
 
   const handleTabClick = (index) => {
     dispatch(toggleTab(index));
@@ -38,7 +69,11 @@ function Tabs() {
                 <h2 className="font-semibold text-xl">
                   {tabs[activeTab].text}
                 </h2>
-                <p className="p-4">{tabs[activeTab].content}</p>
+                <p className="p-4">
+                  User ID: {tabs[activeTab].data.userId}
+                  <br />
+                  Content: {tabs[activeTab].data.body}
+                </p>
               </div>
             )}
           </div>

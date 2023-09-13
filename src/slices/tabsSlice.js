@@ -7,23 +7,36 @@ const tabsSlice = createSlice({
     tabs: [
       {
         text: 'Code',
-        content:
-          'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...',
+        contentFromAPI: false,
+        content: '1',
         isVisible: true,
+        data: {
+          userId: null,
+          body: null,
+        },
       },
       {
         text: 'About',
-        content:
-          'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...',
+        contentFromAPI: false,
+        content: '12',
         isVisible: true,
+        data: {
+          userId: null,
+          body: null,
+        },
       },
       {
         text: 'Contact',
-        content: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...',
+        contentFromAPI: false,
+        content: '123',
         isVisible: true,
+        data: {
+          userId: null,
+          body: null,
+        },
       },
     ],
-    activeTab: 0,
+    activeTab: -1,
   },
   reducers: {
     addTab: (state, action) => {
@@ -36,8 +49,15 @@ const tabsSlice = createSlice({
     toggleTab: (state, action) => {
       state.activeTab = action.payload;
     },
+    updateTabContent: (state, action) => {
+      const { index, data } = action.payload;
+      state.tabs[index].data.userId = data.userId;
+      state.tabs[index].data.body = data.body;
+      state.tabs[index].contentFromAPI = true;
+    },
   },
 });
 
-export const { addTab, removeTab, toggleTab } = tabsSlice.actions;
+export const { addTab, removeTab, toggleTab, updateTabContent } =
+  tabsSlice.actions;
 export default tabsSlice.reducer;
