@@ -1,49 +1,21 @@
-import React, { useState } from 'react';
+// Tabs.js
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTab, removeTab, toggleTab } from '../slices/tabsSlice';
 import Tab from './Tab';
-import Grid from './Grid';
 
 function Tabs() {
-  const [tabs, setTabs] = useState([
-    {
-      text: 'Code',
-      content:
-        'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...',
-      isVisible: true,
-    },
-    {
-      text: 'About',
-      content:
-        'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis eum similique...',
-      isVisible: true,
-    },
-    {
-      text: 'Contact',
-      content: <Grid />,
-      isVisible: true,
-    },
-  ]);
+  const tabs = useSelector((state) => state.tabs.tabs);
+  const activeTab = useSelector((state) => state.tabs.activeTab);
+  const dispatch = useDispatch();
 
   const handleTabClick = (index) => {
-    // Toggle visibility of the clicked tab
-    const updatedTabs = tabs.map((tab, i) => {
-      return { ...tab, isVisible: i === index };
-    });
-    setTabs(updatedTabs);
+    dispatch(toggleTab(index));
   };
 
   const handleCloseTab = (index) => {
-    // Remove the tab from the array
-    const updatedTabs = tabs.filter((tab, i) => i !== index);
-    setTabs(updatedTabs);
-
-    // Select the first tab if it's not visible
-    if (index === activeTab) {
-      const firstVisibleTab = updatedTabs.findIndex((tab) => tab.isVisible);
-      setActiveTab(firstVisibleTab !== -1 ? firstVisibleTab : -1);
-    }
+    dispatch(removeTab(index));
   };
-
-  const activeTab = tabs.findIndex((tab) => tab.isVisible);
 
   return (
     <div className="flex justify-center items-center h-screen">
