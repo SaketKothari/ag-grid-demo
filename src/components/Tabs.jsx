@@ -1,42 +1,31 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  addTab,
-  removeTab,
-  toggleTab,
-  updateTabContent,
-} from '../slices/tabsSlice';
+import { toggleTab, removeTab } from '../slices/tabsSlice';
 import Tab from './Tab';
+import Grid from './Grid';
+import Sidebar from './Sidebar';
 import { fetchTabContent } from '../utils/api';
-import Grid from './Grid'; // Import the Grid component
 
-function Tabs() {
+const Tabs = () => {
   const tabs = useSelector((state) => state.tabs.tabs);
   const activeTab = useSelector((state) => state.tabs.activeTab);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Fetch tab content from JSONPlaceholder
     tabs.forEach((tab, index) => {
-      if (tab.contentFromAPI) {
-        // Skip if content is already fetched
-        return;
+      if (!tab.contentFromAPI) {
+        fetchTabContent(index)
+          .then((data) => {
+            if (data && data.userId && data.body) {
+              dispatch(updateTabContent({ index, data }));
+            } else {
+              console.error(`Invalid data received for tab ${index}:`, data);
+            }
+          })
+          .catch((error) => {
+            console.error(`Error fetching tab content: ${error}`);
+          });
       }
-
-      // Use the API function to fetch content
-      fetchTabContent(index)
-        .then((data) => {
-          // Ensure the data contains 'userId' and 'body'
-          if (data && data.userId && data.body) {
-            // Update tab content in the Redux store
-            dispatch(updateTabContent({ index, data }));
-          } else {
-            console.error(`Invalid data received for tab ${index}:`, data);
-          }
-        })
-        .catch((error) => {
-          console.error(`Error fetching tab content: ${error}`);
-        });
     });
   }, [tabs, dispatch]);
 
@@ -45,49 +34,54 @@ function Tabs() {
   };
 
   const handleCloseTab = (index) => {
-    dispatch(removeTab(index));
+    dispatch(removeTab(index)); // Add this handler to remove the tab
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-11/12 md:w-2/3 lg:w-1/2">
-        <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
-          {tabs.map((tab, index) => (
-            <Tab
-              key={index}
-              tab={tab}
-              isActive={activeTab === index}
-              onClick={() => handleTabClick(index)}
-              onClose={() => handleCloseTab(index)}
-            />
-          ))}
-        </ul>
-        <div className="tabs w-full h-96 bg-gray-100 shadow-md">
-          <div className="tab-content relative h-full overflow-hidden">
-            {activeTab !== -1 && (
-              <div className="tab-content-item absolute w-full text-center transform transition-transform duration-500 ease-in-out">
-                {tabs[activeTab].text === 'Code' ? (
-                  // Conditional rendering of Grid component in the "Code" tab
-                  <Grid />
-                ) : (
-                  <>
-                    <h2 className="font-semibold text-xl">
-                      {tabs[activeTab].text}
-                    </h2>
-                    <p className="p-4">
-                      User ID: {tabs[activeTab].data.userId}
-                      <br />
-                      Content: {tabs[activeTab].data.body}
-                    </p>
-                  </>
-                )}
-              </div>
-            )}
+    <div className="min-h-screen bg-gray-100 flex">
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Content */}
+      <main className="w-3/4 p-6 bg-gray-200">
+        <div className="bg-white rounded-lg shadow p-6">
+          {/* Horizontal Tabs */}
+          <div className="flex items-center space-x-4 list-none">
+            {tabs.map((tab, index) => (
+              <Tab
+                key={index}
+                tab={tab}
+                isActive={activeTab === index}
+                onClick={() => handleTabClick(index)}
+                onClose={() => handleCloseTab(index)} // Add this to close the tab
+                horizontal
+              />
+            ))}
           </div>
+
+          {/* Tab Content */}
+          {activeTab !== -1 && (
+            <div className="mt-6">
+              {tabs[activeTab].text === 'Code' ? (
+                <Grid />
+              ) : (
+                <>
+                  <h2 className="text-2xl font-semibold mb-2">
+                    {tabs[activeTab].text}
+                  </h2>
+                  <p className="text-gray-600">
+                    User ID: {tabs[activeTab].data.userId}
+                    <br />
+                    Content: {tabs[activeTab].data.body}
+                  </p>
+                </>
+              )}
+            </div>
+          )}
         </div>
-      </div>
+      </main>
     </div>
   );
-}
+};
 
 export default Tabs;
