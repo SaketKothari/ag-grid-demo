@@ -1,4 +1,3 @@
-// Tabs.js
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -9,6 +8,7 @@ import {
 } from '../slices/tabsSlice';
 import Tab from './Tab';
 import { fetchTabContent } from '../utils/api';
+import Grid from './Grid'; // Import the Grid component
 
 function Tabs() {
   const tabs = useSelector((state) => state.tabs.tabs);
@@ -66,14 +66,21 @@ function Tabs() {
           <div className="tab-content relative h-full overflow-hidden">
             {activeTab !== -1 && (
               <div className="tab-content-item absolute w-full text-center transform transition-transform duration-500 ease-in-out">
-                <h2 className="font-semibold text-xl">
-                  {tabs[activeTab].text}
-                </h2>
-                <p className="p-4">
-                  User ID: {tabs[activeTab].data.userId}
-                  <br />
-                  Content: {tabs[activeTab].data.body}
-                </p>
+                {tabs[activeTab].text === 'Code' ? (
+                  // Conditional rendering of Grid component in the "Code" tab
+                  <Grid />
+                ) : (
+                  <>
+                    <h2 className="font-semibold text-xl">
+                      {tabs[activeTab].text}
+                    </h2>
+                    <p className="p-4">
+                      User ID: {tabs[activeTab].data.userId}
+                      <br />
+                      Content: {tabs[activeTab].data.body}
+                    </p>
+                  </>
+                )}
               </div>
             )}
           </div>
