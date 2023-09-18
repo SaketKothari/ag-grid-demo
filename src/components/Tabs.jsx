@@ -11,7 +11,7 @@ const Tabs = () => {
   const tabs = useSelector((state) => state.tabs.tabs);
   const activeTab = useSelector((state) => state.tabs.activeTab);
   const dispatch = useDispatch();
-  const { tabName } = useParams()
+  const { tabName } = useParams();
 
   useEffect(() => {
     tabs.forEach((tab, index) => {
@@ -29,7 +29,7 @@ const Tabs = () => {
           });
       }
     });
-  }, [tabs, dispatch]);
+  }, [tabName, tabs, dispatch]);
 
   const handleTabClick = (index) => {
     dispatch(toggleTab(index));
