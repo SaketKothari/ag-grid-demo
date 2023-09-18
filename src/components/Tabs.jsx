@@ -5,11 +5,13 @@ import Tab from './Tab';
 import Grid from './Grid';
 import Sidebar from './Sidebar';
 import { fetchTabContent } from '../utils/api';
+import { useParams } from 'react-router-dom';
 
 const Tabs = () => {
   const tabs = useSelector((state) => state.tabs.tabs);
   const activeTab = useSelector((state) => state.tabs.activeTab);
   const dispatch = useDispatch();
+  const { tabName } = useParams()
 
   useEffect(() => {
     tabs.forEach((tab, index) => {
@@ -46,7 +48,7 @@ const Tabs = () => {
       <main className="w-3/4 p-6 bg-gray-200">
         <div className="bg-white rounded-lg shadow p-6">
           {/* Horizontal Tabs */}
-          <div className="flex items-center space-x-4 list-none">
+          <div className="bg-gray-900 text-white flex items-center space-x-4 list-none">
             {tabs.map((tab, index) => (
               <Tab
                 key={index}

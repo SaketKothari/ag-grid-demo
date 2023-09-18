@@ -18,7 +18,7 @@ const Grid = () => {
 
   return (
     <>
-      <div className="ag-theme-alpine" style={{ height: 300, width: 600 }}>
+      <div className="ag-theme-alpine" style={{ height: 300, width: 800 }}>
         <AgGridReact rowData={rowData} columnDefs={columnDefs}></AgGridReact>
       </div>
     </>
