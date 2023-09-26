@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleTab, removeTab } from '../slices/tabsSlice';
+import { toggleTab, removeTab, updateTabContent } from '../slices/tabsSlice';
 import Tab from './Tab';
 import Grid from './Grid';
 import Sidebar from './Sidebar';
@@ -42,7 +42,7 @@ const Tabs = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
-      <Sidebar />
+      {/* <Sidebar /> */}
 
       {/* Content */}
       <main className="w-3/4 p-6 bg-gray-200">
