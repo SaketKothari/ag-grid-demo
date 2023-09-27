@@ -5,49 +5,66 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { faker } from '@faker-js/faker';
 
 const Grid = () => {
-  const [rowData, setRowData] = useState([]);
+  const [gridApi, setGridApi] = useState(null);
   const [columnDefs] = useState([
-    { field: 'make' },
+    { field: 'make', cellRenderer: 'loading' },
     { field: 'model' },
     { field: 'price' },
   ]);
 
-  // Function to generate fake data
-  const generateFakeData = (rowCount) => {
-    const fakeData = [];
+  const datasource = {
+    getRows(params) {
+      console.log(JSON.stringify(params, null, 1));
+      const { startRow, endRow, filterModel, sortModel } = params;
 
-    for (let i = 0; i < rowCount; i++) {
-      fakeData.push({
-        make: faker.vehicle.manufacturer(),
-        model: faker.vehicle.model(),
-        price: faker.finance.amount(10000, 100000, 2, '$'),
-      });
-    }
+      // Generate fake data
+      const fakeData = [];
+      for (let i = startRow; i < endRow; i++) {
+        fakeData.push({
+          make: faker.vehicle.manufacturer(),
+          model: faker.vehicle.model(),
+          price: faker.finance.amount(10000, 100000, 2, '$'),
+        });
+      }
 
-    return fakeData;
+      // Simulate a delay to mimic server-side fetching
+      setTimeout(() => {
+        params.successCallback(fakeData, 100000); // Assuming there are 100000 total rows
+      }, 1000); // Adjust the delay as needed
+    },
   };
 
-  useEffect(() => {
-    // Generate and set fake data when the component mounts
-    const initialRowCount = 10000; // Adjust this number as needed
-    const initialData = generateFakeData(initialRowCount);
-    setRowData(initialData);
-  }, []);
+  const components = {
+    loading: (params) => {
+      if (params.value !== undefined) {
+        return params.value;
+      } else {
+        return (
+          <img
+            src="https://www.ag-grid.com/example-assets/loading.gif"
+            alt="Loading"
+          />
+        );
+      }
+    },
+  };
+
+  const onGridReady = (params) => {
+    setGridApi(params);
+    // Register datasource with the grid
+    params.api.setDatasource(datasource);
+  };
 
   return (
-    <>
-      <div
-        className="ag-theme-alpine"
-        style={{ height: '600px', width: '100%' }}
-      >
-        <AgGridReact
-          rowData={rowData}
-          columnDefs={columnDefs}
-          pagination={true}
-          paginationPageSize={100} // Adjust the page size as needed
-        ></AgGridReact>
-      </div>
-    </>
+    <div className="ag-theme-alpine" style={{ height: 600, width: '100%' }}>
+      <AgGridReact
+        columnDefs={columnDefs}
+        rowModelType="infinite"
+        defaultColDef={{ filter: true, floatingFilter: true, sortable: true }}
+        onGridReady={onGridReady}
+        components={components}
+      ></AgGridReact>
+    </div>
   );
 };
 
