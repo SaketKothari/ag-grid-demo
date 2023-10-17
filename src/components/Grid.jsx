@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -14,8 +14,8 @@ const Grid = () => {
 
   const datasource = {
     getRows(params) {
-      console.log(JSON.stringify(params, null, 1));
-      const { startRow, endRow, filterModel, sortModel } = params;
+      // console.log(JSON.stringify(params, null, 1));
+      const { startRow, endRow } = params;
 
       // Generate fake data
       const fakeData = [];

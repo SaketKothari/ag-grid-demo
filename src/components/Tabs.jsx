@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleTab, removeTab, updateTabContent } from '../slices/tabsSlice';
+import { useParams } from 'react-router-dom';
 
 import Tab from './Tab';
 import Grid from './Grid';
@@ -8,7 +8,7 @@ import Grid from './Grid';
 import ContactTab from './ContactTab';
 
 import { fetchTabContent } from '../utils/api';
-import { useParams } from 'react-router-dom';
+import { toggleTab, removeTab, updateTabContent } from '../slices/tabsSlice';
 
 const Tabs = () => {
   const tabs = useSelector((state) => state.tabs.tabs);
@@ -44,9 +44,6 @@ const Tabs = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
-      {/* Sidebar */}
-      {/* <Sidebar /> */}
-
       {/* Content */}
       <main className="w-3/4 p-6 bg-gray-200">
         <div className="bg-white rounded-lg shadow p-6">
@@ -58,7 +55,7 @@ const Tabs = () => {
                 tab={tab}
                 isActive={activeTab === index}
                 onClick={() => handleTabClick(index)}
-                onClose={() => handleCloseTab(index)} // Add this to close the tab
+                onClose={() => handleCloseTab(index)}
                 horizontal
               />
             ))}
@@ -71,7 +68,7 @@ const Tabs = () => {
                 <Grid />
               ) : tabs[activeTab].text === 'Contact' ? (
                 <ContactTab />
-              ): (
+              ) : (
                 <>
                   <h2 className="text-2xl font-semibold mb-2">
                     {tabs[activeTab].text}
