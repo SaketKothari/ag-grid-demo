@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTab, removeTab, updateTabContent } from '../slices/tabsSlice';
+
 import Tab from './Tab';
 import Grid from './Grid';
-import Sidebar from './Sidebar';
+
+import ContactTab from './ContactTab';
+
 import { fetchTabContent } from '../utils/api';
 import { useParams } from 'react-router-dom';
 
@@ -66,7 +69,9 @@ const Tabs = () => {
             <div className="mt-6">
               {tabs[activeTab].text === 'Code' ? (
                 <Grid />
-              ) : (
+              ) : tabs[activeTab].text === 'Contact' ? (
+                <ContactTab />
+              ): (
                 <>
                   <h2 className="text-2xl font-semibold mb-2">
                     {tabs[activeTab].text}
